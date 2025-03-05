@@ -1,6 +1,10 @@
 venv
-.env
-app/*
 docker-compose.yaml
 *.bak
 requirements.txt
+
+**/__pycache__/
+**/.pytest_cache/
+**/test.sqlite
+
+**/.env
