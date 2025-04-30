@@ -14,7 +14,7 @@ services:
       
   vue-app:
     build: ./frontend_vue/app
-    image: CatherineHSU39/fastapi-env:latest
+    image: CatherineHSU39/sdc-main-branch-frontend:latest
     ports:
       # Nginx container listen on port 80
       # Access the frontend by http://localhost:8080 
@@ -30,7 +30,7 @@ services:
 
   backend-app-1:
     build: ./backend_fastapi
-    image: CatherineHSU39/fastapi-env:latest
+    image: CatherineHSU39/sdc-main-branch-backend:latest
     expose:
       - "8000"
     restart: always
@@ -39,7 +39,7 @@ services:
 
   backend-app-2:
     build: ./backend_fastapi
-    image: CatherineHSU39/fastapi-env:latest
+    image: CatherineHSU39/sdc-main-branch-backend:latest
     expose:
       - "8000"
     restart: always
@@ -48,7 +48,7 @@ services:
 
   backend-app-3:
     build: ./backend_fastapi
-    image: CatherineHSU39/fastapi-env:latest
+    image: CatherineHSU39/sdc-main-branch-backend:latest
     expose:
       - "8000"
     restart: always
