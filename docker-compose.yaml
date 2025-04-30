@@ -1,18 +1,6 @@
-services:
-  # postgres:
-  #   image: postgres:13
-  #   container_name: sdc_postgres
-  #   environment:
-  #     POSTGRES_USER: user
-  #     POSTGRES_PASSWORD: password
-  #     POSTGRES_DB: fastapi
-  #   networks:
-  #     - intranet
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
+version: '3.9'
 
+services:
   # mariadb:
   #   image: mariadb:10.6
   #   container_name: sdc_mariadb
@@ -23,63 +11,52 @@ services:
   #   volumes:
   #     - mariadb_data:/var/lib/mysql
   #     - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
-
-
-  # pgadmin4:
-  #   image: dpage/pgadmin4
-  #   container_name: sdc_pgadmin4
-  #   environment:
-  #     - PGADMIN_DEFAULT_EMAIL=user@example.com
-  #     - PGADMIN_DEFAULT_PASSWORD=password
-  #   networks:
-  #     - intranet
-  #   ports:
-  #     - "5050:80"
-  #   depends_on:
-  #     - postgres
-
-  # phpmyadmin:
-  #   image: phpmyadmin
-  #   container_name: sdc_phpmyadmin
-  #   environment:
-  #     PMA_HOST: mariadb
-  #     MYSQL_ROOT_PASSWORD: rootpassword
-  #   networks:
-  #     - intranet
-  #   ports:
-  #     - "8081:80"
-  #   depends_on:
-  #     - mariadb
-
-  # backend-fastapi:
-  #   image: python:3.10
-  #   container_name: sdc_fastapi_app
-  #   working_dir: /code/app
-  #   networks:
-  #     - intranet
-  #   volumes:
-  #     - ./backend_fastapi/app:/code/app
-  #     - ./backend_fastapi/entrypoint.sh:/code/entrypoint.sh
-  #   ports:
-  #     - "8000:8000"
-  #   entrypoint: ["/code/entrypoint.sh"]
-  #   depends_on:
-  #     - mariadb
-  frontend-vue:
-    image: node:22-bookworm
-    container_name: sdc_vue_app
-    working_dir: /code/app
-    volumes:
-      - ./frontend_vue/app:/code/app
-      - ./frontend_vue/entrypoint.sh:/code/entrypoint.sh
+      
+  vue-app:
+    build: ./frontend_vue/app
+    image: linda333/sdc-main-branch-frontend:latest
     ports:
-      - "8080:8080"
-    entrypoint: ["/code/entrypoint.sh"]
+      # Nginx container listen on port 80
+      # Access the frontend by http://localhost:8080 
+      - "80:80"  
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend-app-1
+      - backend-app-2
+      - backend-app-3
+    networks:
+      - intranet
 
-# networks:
-#   intranet:
-#     driver: bridge
+  backend-app-1:
+    build: ./backend_fastapi
+    image: linda333/sdc-main-branch-backend:latest
+    expose:
+      - "8000"
+    restart: always
+    networks:
+      - intranet
 
-# volumes:
-#   postgres_data:
-  # mariadb_data:
+  backend-app-2:
+    build: ./backend_fastapi
+    image: linda333/sdc-main-branch-backend:latest
+    expose:
+      - "8000"
+    restart: always
+    networks:
+      - intranet
+
+  backend-app-3:
+    build: ./backend_fastapi
+    image: linda333/sdc-main-branch-backend:latest
+    expose:
+      - "8000"
+    restart: always
+    networks:
+      - intranet
+
+networks:
+  intranet:
+
+volumes:
+  mariadb_data:
