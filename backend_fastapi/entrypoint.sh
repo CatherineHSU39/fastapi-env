@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Initialize
 if [ ! -d ".git" ]; then

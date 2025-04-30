@@ -1,0 +1,1 @@
+為了方便，我先將使用者相關功能關掉了，但是程式碼還留著，如果想要啟用，首先要將 main.py 中的 startup 刪除，這樣就不會自動建立一個使用者，並且將 middlewares/auth.py 中給予固定身分組的程式刪除，並且取消註解後面的權限檢查程式。最後參考 [上學期的講義](https://www.notion.so/sdc-nycu/OAuth-2-Testing-1367dadd8040809fa981d2957cd68a83#1367dadd804081a4bb06f1b184fac404) 到 github 註冊應用程式並且將 key 填入 .env file 中即可使用。

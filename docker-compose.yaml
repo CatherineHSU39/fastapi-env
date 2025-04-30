@@ -1,62 +1,30 @@
-version: '3.9'
-
 services:
-  # mariadb:
-  #   image: mariadb:10.6
-  #   container_name: sdc_mariadb
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: rootpassword
-  #   networks:
-  #     - intranet
-  #   volumes:
-  #     - mariadb_data:/var/lib/mysql
-  #     - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
-      
-  vue-app:
-    build: ./frontend_vue/app
+  backend-app:
+    build: ./backend_fastapi
+    container_name: backend-app-1
+    image: CatherineHSU39/sdc-main-branch-backend:latest
+    expose:
+      - "8000"
+    restart: always
+    networks:
+      - intranet
+
+  frontend-vue:
+    build: ./frontend_vue
+    container_name: frontend-vue
     image: CatherineHSU39/sdc-main-branch-frontend:latest
     ports:
-      # Nginx container listen on port 80
-      # Access the frontend by http://localhost:8080 
       - "80:80"  
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
-      - backend-app-1
-      - backend-app-2
-      - backend-app-3
-    networks:
-      - intranet
-
-  backend-app-1:
-    build: ./backend_fastapi
-    image: CatherineHSU39/sdc-main-branch-backend:latest
-    expose:
-      - "8000"
-    restart: always
-    networks:
-      - intranet
-
-  backend-app-2:
-    build: ./backend_fastapi
-    image: CatherineHSU39/sdc-main-branch-backend:latest
-    expose:
-      - "8000"
-    restart: always
-    networks:
-      - intranet
-
-  backend-app-3:
-    build: ./backend_fastapi
-    image: CatherineHSU39/sdc-main-branch-backend:latest
-    expose:
-      - "8000"
-    restart: always
+      - backend-app
     networks:
       - intranet
 
 networks:
   intranet:
+    driver: bridge
 
 volumes:
   mariadb_data:
